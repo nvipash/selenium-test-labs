@@ -1,2 +1,2 @@
 # selenium-test-labs
-Some tests created with Selenium framework for the "Automation testing" subject (VII-th sem)
+Some simple tests for web-sites created with Selenium framework for the "Automation testing" subject (VII-th sem). To run this tests, you need to download [geckodriver.exe](https://github.com/mozilla/geckodriver/releases) and place it to the project folder. Also you need to install [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/) browser.
