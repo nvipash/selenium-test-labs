@@ -1,6 +1,6 @@
-package test;
-
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,14 +13,18 @@ public class GoogleHerokuWebPagesTest {
     private static final String HEROKU_APP_URL = "http://the-internet.herokuapp.com";
     private static final String WEBDRIVER_KEY = "webdriver.gecko.driver";
     private static final String WEBDRIVER = "geckodriver.exe";
+    private static WebDriver browser;
+
+    @BeforeClass
+    public static void openBrowser() {
+        System.setProperty(WEBDRIVER_KEY, WEBDRIVER);
+        browser = new FirefoxDriver();
+    }
 
     @Test
     public void search_and_check_asserts_text() {
         final String INPUT_ATTRIBUTE_TO_CHECK = "value";
         final String INPUT_NAME_ATTRIBUTE = "q";
-
-        System.setProperty(WEBDRIVER_KEY, WEBDRIVER);
-        WebDriver browser = new FirefoxDriver();
 
         // Opens “www.google.com” page
         browser.get(GOOGLE_URL);
@@ -33,20 +37,15 @@ public class GoogleHerokuWebPagesTest {
 
         // Asserts that title contains “Selenium 4” string
         Assert.assertEquals(textToFind, searchInput.getAttribute(INPUT_ATTRIBUTE_TO_CHECK));
-
-        browser.quit();
     }
 
     @Test
-    public void form_auth_and_log_out() throws InterruptedException {
+    public void form_auth_and_log_out() {
         final String LOGIN_LINK_TEXT = "Form Authentication";
         final String INPUT_USERNAME_NAME_ATTRIBUTE = "username";
         final String INPUT_PASSWORD_NAME_ATTRIBUTE = "password";
         final String SECURE_AREA_HTML_ELEMENT = "h2";
         final String LOGIN_CLASS_ATTRIBUTE = "radius";
-
-        System.setProperty(WEBDRIVER_KEY, WEBDRIVER);
-        WebDriver browser = new FirefoxDriver();
 
         // Opens “http://the-internet.herokuapp.com” page
         browser.get(HEROKU_APP_URL);
@@ -73,8 +72,6 @@ public class GoogleHerokuWebPagesTest {
         // Log out
         WebElement logoutButton = browser.findElement(By.className(LOGIN_CLASS_ATTRIBUTE));
         logoutButton.sendKeys(Keys.RETURN);
-
-        browser.quit();
     }
 
     @Test
@@ -83,9 +80,6 @@ public class GoogleHerokuWebPagesTest {
         final String UPLOAD_CLASS_ATTRIBUTE = "button";
         final String CHOOSE_FILE_ID_ATTRIBUTE = "file-upload";
         final String UPLOADED_FILES_ID_ATTRIBUTE = "uploaded-files";
-
-        System.setProperty(WEBDRIVER_KEY, WEBDRIVER);
-        WebDriver browser = new FirefoxDriver();
 
         // Opens “http://the-internet.herokuapp.com/” page
         browser.get(HEROKU_APP_URL);
@@ -108,7 +102,10 @@ public class GoogleHerokuWebPagesTest {
         WebElement uploadedFileDiv = browser.findElement(By.id(UPLOADED_FILES_ID_ATTRIBUTE));
         String uploadedFileText = uploadedFileDiv.getText();
         Assert.assertEquals(filenameToUpload, uploadedFileText);
+    }
 
+    @AfterClass
+    public static void closeBrowser() {
         browser.quit();
     }
 }
